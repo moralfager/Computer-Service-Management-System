@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="order-form-container">
+    <h2>Жаңа тапсырыс жіберіңіз</h2>
+    <form method="post" class="order-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="submit-btn">Тапсырыс беру</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(function() {
+    // При изменении выбора услуги
+    $('#id_service').change(function(){
+        var url = "{% url 'ajax_load_technicians' %}";  // Получите URL из конфигурации Django
+        var serviceId = $(this).val();  // Получите выбранное значение услуги
+
+        $.ajax({
+            url: url,  // Используйте URL, который вы создали в urls.py
+            data: {
+                'service_id': serviceId  // Передайте выбранное значение услуги
+            },
+            success: function (data) {
+                // Очистите предыдущий список техников
+                $("#id_technician").html("<option value=''>---------</option>");
+                // Добавьте новые опции из возвращенного AJAX-ответа
+                $.each(data, function(index, item) {
+                    $('#id_technician').append($('<option>', {
+                        value: item.id,
+                        text : item.name
+                    }));
+                });
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

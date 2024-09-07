@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Отчёт по выполненным работам</h2>
+
+    <!-- График использования материалов -->
+    <h3>Использование материалов</h3>
+    <canvas id="materialsChart"></canvas>
+
+    <!-- Display the profit calculation -->
+    <h3>Расчет прибыли</h3>
+    <p>Общая прибыль: {{ profits_data.actual_profit }}</p>
+    <p>Прибыль от материалов: {{ profits_data.materials_profit }}</p>
+    <p>Прибыль от служебных сборов: {{ profits_data.service_fees_profit }}</p>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Инициализация данных для графика использования материалов
+    var materialsData = {{ materials_data|safe }};
+    var materialsChart = new Chart(document.getElementById('materialsChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: materialsData.map(item => item.material__name),
+            datasets: [{
+                label: 'Количество',
+                data: materialsData.map(item => item.total_quantity),
+                backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                borderColor: 'rgba(0, 123, 255, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Инициализация данных для графика прибыли
+    // Инициализация данных для графика прибыли
+var profitsData = {{ profits_data|safe }};
+var profitChart = new Chart(document.getElementById('profitChart').getContext('2d'), {
+    type: 'line',
+    data: {
+        labels: ['Total Profit'], // Adjust the label as per your requirement
+        datasets: [{
+            label: 'Прибыль',
+            data: [profitsData.total_profit], // Use total_profit instead of completion_date__month
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Сумма прибыли'
+                }
+            }
+        }
+    }
+});
+
+});
+</script>
+{% endblock scripts %}

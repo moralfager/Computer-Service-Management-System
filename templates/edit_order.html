@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Тәртіпті өзгерту №{{ order.id }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Күйді жаңарту</button>
+    </form>
+</div>
+{% endblock %}

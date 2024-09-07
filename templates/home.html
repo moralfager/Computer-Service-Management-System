@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}Басты бет{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1>ServiceART қызметіне қош келдіңіз!</h1>
+        <p>Техникалық қызмет көрсету және жөндеу әлеміндегі сіздің сенімді серіктесіңіз.</p>
+        <div>
+            <a href="{% url 'new_order' %}" class="btn btn-primary">Тапсырыс беру</a>
+            <a href="{% url 'technician_login' %}" class="btn btn-secondary">Қызметкердің логині</a>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="about-section">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width: 800px; height: 400px; margin: auto;">
+  <ol class="carousel-indicators">
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+  </ol>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="{% static 'images/your_image1.jpg' %}" class="d-block w-100" alt="First slide" style="height: 100%;">
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'images/your_image2.jpg' %}" class="d-block w-100" alt="Second slide" style="height: 100%;">
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'images/your_image3.jpg' %}" class="d-block w-100" alt="Third slide" style="height: 100%;">
+    </div>
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+
+</section>
+
+
+<!-- Charts Section -->
+<section class="charts-section">
+    <div class="container mt-5">
+    <h2>Жұмыс статистикасы</h2>
+    <div>
+        <canvas id="ordersChart"></canvas>
+    </div>
+    <div>
+        <canvas id="feedbackChart"></canvas>
+    </div>
+    </div>
+</section>
+{% block scripts %}
+<script>
+    // Данные для графика выполненных заказов
+    const ordersCtx = document.getElementById('ordersChart').getContext('2d');
+    const ordersChart = new Chart(ordersCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Январь', 'Февраль', 'Март', 'Апрель'],
+            datasets: [{
+                label: 'Завершено заказов',
+                data: [30, 45, 23, 67],
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Данные для графика положительных отзывов
+    const feedbackCtx = document.getElementById('feedbackChart').getContext('2d');
+    const feedbackChart = new Chart(feedbackCtx, {
+        type: 'line',
+        data: {
+            labels: ['Январь', 'Февраль', 'Март', 'Апрель'],
+            datasets: [{
+                label: 'Положительные отзывы (%)',
+                data: [90, 85, 80, 95],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+{% endblock scripts %}
+{% endblock %}
